@@ -1,4 +1,5 @@
 import numpy as np
+import unittest
 
 class Variable:
     def __init__(self, data):
@@ -27,7 +28,7 @@ class Variable:
                 funcs.append(x.creator)
 
 def as_array(x):
-    if np.isscalar()
+    if np.isscalar(x):
         return np.array(x)
     return x
         
@@ -85,4 +86,29 @@ def num_diff(f, x, eps=1e-4):
     return (y1.data - y0.data) / (2 * eps)
 
 
-x = Variable(1.0)
+# TEST CODES
+class SquareTest(unittest.TestCase):
+    def test_forward(self):
+        x = Variable(np.array(2.0))
+        y = square(x)
+        expected = np.array(4.0)
+        self.assertEqual(y.data, expected)
+
+    def test_backward(self):
+        x = Variable(np.array(3.0))
+        y = square(x)
+        y.backward()
+        expected = np.array(6.0)
+        self.assertEqual(x.grad, expected)
+
+    def test_gradient_check(self):
+        x = Variable(np.array(np.random.rand(1)))
+        y = square(x)
+        y.backward()
+        expected = num_diff(square, x)
+        flg = np.allclose(expected, x.grad)
+        self.assertTrue(flg)
+
+
+
+
