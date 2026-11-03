@@ -2,6 +2,9 @@ import numpy as np
 import weakref
 import contextlib
 
+from core_simple import Variable
+from utils import plot_dot_graph
+
 class Variable:
     __array_priority__ = 200
     def __init__(self, data, name=None):
